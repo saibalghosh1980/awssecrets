@@ -1,0 +1,33 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: awssecrets
+  config:
+    import:
+     - optional:aws-secretsmanager:/ceil/awssecrets
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+cloud:
+  aws:
+    credentials:
+      instance-profile: false
+    region:
+      static:  eu-west-2
+logging:
+   level:
+     io:
+       awspring:
+         cloud:
+           secretsmanager: debug
+com:
+  cts:
+    test: 123

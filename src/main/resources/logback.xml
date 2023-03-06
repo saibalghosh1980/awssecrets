@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <include
+            resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <springProperty scope="context" name="springAppName"
+                    source="spring.application.name"/>
+
+    <appender name="STDOUT"
+              class="ch.qos.logback.core.ConsoleAppender">
+        <!-- Log message format -->
+        <encoder>
+
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+    <appender name="ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="STDOUT"/>
+        <neverBlock>true</neverBlock>
+        <maxFlushTime>500</maxFlushTime>
+        <discardingThreshold>0</discardingThreshold>
+    </appender>
+    <springProfile name="default | local | test">
+        <property name="LOG_HOME" value="C:/LOGS/${LOGFILENAME}"/>
+        <property name="APP_PROILE" value="default"/>
+    </springProfile>
+    <springProfile name="dev">
+        <property name="LOG_HOME" value="/logs/${LOGFILENAME}/dev"/>
+        <property name="APP_PROILE" value="dev"/>
+    </springProfile>
+
+    <springProfile name="uat">
+        <property name="LOG_HOME" value="/logs/${LOGFILENAME}/uat"/>
+        <property name="APP_PROILE" value="uat"/>
+    </springProfile>
+    <springProfile name="sit">
+        <property name="LOG_HOME" value="/logs/${LOGFILENAME}/uat"/>
+        <property name="APP_PROILE" value="uat"/>
+    </springProfile>
+    <springProfile name="prod">
+        <property name="LOG_HOME" value="/logs/${LOGFILENAME}/prod"/>
+        <property name="APP_PROILE" value="prod"/>
+    </springProfile>
+
+    <property name="LOG_FILE_NAME" value="${LOGFILENAME}"/>
+
+    <!-- ///////////////////////////////////////////////// -->
+    <!-- Setting the root level of logging to INFO -->
+    <root level="DEBUG">
+        <appender-ref ref="ASYNC"/>
+    </root>
+    <logger name="org.springframework" level="INFO"
+            additivity="false">
+        <appender-ref ref="ASYNC"/>
+    </logger>
+    <logger name="io.awspring.cloud.secretsmanager" level="DEBUG" additivity="false">
+        <appender-ref ref="ASYNC"/>
+    </logger>
+    <logger name="com.amazonaws.xray" level="INFO" additivity="false">
+        <appender-ref ref="ASYNC"/>
+    </logger>
+    <logger name="org.apache.camel" level="INFO" additivity="false">
+        <appender-ref ref="ASYNC"/>
+    </logger>
+    <logger name="com.sap" level="DEBUG" additivity="false">
+        <appender-ref ref="ASYNC"/>
+    </logger>
+</configuration>
